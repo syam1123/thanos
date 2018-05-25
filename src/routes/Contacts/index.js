@@ -7,6 +7,9 @@ import { getContacts } from 'actions'
 import { EachContactRow } from 'components'
 
 const propTypes = {
+  /*
+    Array of contacts from the json
+   */
   contacts: PropTypes.array.isRequired
 }
 
@@ -117,27 +120,46 @@ class Contacts extends Component {
     window.removeEventListener('scroll', this.handleScroll);
   }
 
+  /**
+   * Some feild may contain 'NULL' as value
+   * Remove pseudo strings or undefined values
+   * @param  {string} value Value to be checked as valid or not
+   * @return {string}       Valid string only
+   */
   renderValidField = (value) => {
     if (!value || (!!value && value.toLowerCase() == 'null'))
       return null;
     return value;
   }
 
+  /**
+   * Handling scroll as to fetch more data from json and update the limit in the state
+   * It will fetch more data from contacts in the render function
+   * Handle scroll down and scroll up: Fetch data only on scrolling down
+   */
   handleScroll = () => {
     const { limit, totalContacts, scrollOffset } = this.state;
     if (window.pageYOffset < scrollOffset)
       return
-    console.log("scrolling", limit, totalContacts);
     if (limit > totalContacts)
       return
-    console.log("coming until here");
     this.setState({limit: limit+1, scrollOffset: window.pageYOffset})
   }
 
+  /**
+   * Manages each keypress in input seach feild
+   * @param  {object} e Event triggeres on keypress
+   */
   handleSearchInput = (e) => {
     this.setState({searchField: e.target.value})
   }
 
+  /**
+   * Renders a single user's details in a row
+   * @param  {object} contact single user details
+   * @param  {number} index   unique key for each user
+   * @return {node}         HTML component
+   */
   renderEachRow = (contact, index) => {
     const { firstname, lastname, email, agency_name} = contact
     return (
@@ -149,6 +171,9 @@ class Contacts extends Component {
     )
   }
 
+  /**
+   * @return {node} Renders the Search bar and container above the table
+   */
   renderSearchBar = () => {
     return (
       <SearchBar>
@@ -159,6 +184,9 @@ class Contacts extends Component {
     )
   }
 
+  /**
+   * @return {node} The header section of the table
+   */
   renderTableHead = () => {
     return (
       <TableHead>
@@ -172,14 +200,18 @@ class Contacts extends Component {
   render = () => {
     const { contacts } = this.props;
     const { searchField } = this.state;
+    /*
+      Filter the contacts array with the search input
+     */
     const filteredContacts = contacts.filter((contact) => {
       const { firstname, lastname, email, agency_name } = contact;
-      return (
-        firstname && firstname.toString().toLowerCase().includes(searchField.toLowerCase()) ||
-        lastname && lastname.toString().toLowerCase().includes(searchField.toLowerCase()) ||
-        email && email.toString().toLowerCase().includes(searchField.toLowerCase()) ||
-        agency_name && agency_name.toString().toLowerCase().includes(searchField.toLowerCase()))
-      })
+      const filterFields = [firstname, lastname, email, agency_name]
+      return filterFields.find(item => item.toString().toLowerCase().includes(searchField.toLowerCase()))
+    })
+
+    /*
+      Slice the data as to render only limitted number of contacts
+     */
     let contactsToShow = filteredContacts.slice(0, this.state.limit)
     return(
       <ContactsContainer id="contactsContainer">
@@ -187,8 +219,7 @@ class Contacts extends Component {
         <TableContainer>
           {this.renderTableHead()}
           { contactsToShow && contactsToShow.map((contact, index) => {
-            if (index >= this.state.limit)
-              return null;
+            // Render each row
             return this.renderEachRow(contact, index)
           })}
         </TableContainer>
@@ -199,6 +230,9 @@ class Contacts extends Component {
 
 Contacts.propTypes = propTypes
 
+/*
+  Fetch data from the store and pass as props
+ */
 function mapStateToProps(state) {
   const { contacts } = state.appReducer
   return{
