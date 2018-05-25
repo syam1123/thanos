@@ -161,13 +161,12 @@ class Contacts extends Component {
    * @return {node}         HTML component
    */
   renderEachRow = (contact, index) => {
-    const { firstname, lastname, email, agency_name} = contact
     return (
-      <EachRow key={index}>
-        <EachField>{this.renderValidField(firstname)} {this.renderValidField(lastname)} {!(this.renderValidField(firstname) || this.renderValidField(lastname)) && 'Name unavailable'}</EachField>
-        <EachField>{this.renderValidField(email)? email: 'N/A'}</EachField>
-        <EachField>{this.renderValidField(agency_name)? agency_name: 'N/A'}</EachField>
-      </EachRow>
+      <EachContactRow
+        key={index}
+        contact={contact}
+        renderValidField={this.renderValidField}
+      />
     )
   }
 
