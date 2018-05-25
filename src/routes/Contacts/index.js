@@ -123,12 +123,13 @@ class Contacts extends Component {
 
   handleScroll = () => {
     const { limit, totalContacts, scrollOffset } = this.state;
-    // if (window.pageYOffset < scrollOffset)
-    //   return
-    console.log("scrolling", limit, totalContacts);
-    if (limit >= totalContacts)
+    if (window.pageYOffset < scrollOffset)
       return
-    this.setState({limit: limit, scrollOffset: window.pageYOffset})
+    console.log("scrolling", limit, totalContacts);
+    if (limit > totalContacts)
+      return
+    console.log("coming until here");
+    this.setState({limit: limit+1, scrollOffset: window.pageYOffset})
   }
 
   handleSearchInput = (e) => {
@@ -171,8 +172,12 @@ class Contacts extends Component {
     const { searchField } = this.state;
     const filteredContacts = contacts.filter((contact) => {
       const { firstname, lastname, email, agency_name } = contact;
-      return (firstname && firstname.includes(searchField) || lastname && lastname.includes(searchField) || email && email.includes(searchField) || agency_name && agency_name.toString().includes(searchField))
-    })
+      return (
+        firstname && firstname.toString().toLowerCase().includes(searchField) ||
+        lastname && lastname.toString().toLowerCase().includes(searchField) ||
+        email && email.toString().toLowerCase().includes(searchField) ||
+        agency_name && agency_name.toString().toLowerCase().includes(searchField))
+      })
     console.log("this.state.limit", this.state.limit);
     let contactsToShow = filteredContacts.slice(0, this.state.limit)
     return(
