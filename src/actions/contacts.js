@@ -9,7 +9,7 @@ const recieveContacts = (contactsData) => {
 
 export const getContacts = (data) => {
   return (dispatch) => {
-    return thanosRequest.post(thanosConstants.API_SAVE_USER_DETAILS, data)
+    return thanosRequest.get(thanosConstants.API_GET_CONTACTS, data)
       .then((res) => {
         dispatch(recieveContacts(res.data))
       })

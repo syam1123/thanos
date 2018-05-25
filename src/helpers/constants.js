@@ -1,8 +1,8 @@
 // API constants
-const API_GET_CONSTATNTS = 'https://sarathsp06.pythonanywhere.com/users'
+const API_GET_CONTACTS = '../src/assets/json/jsonData.json'
 
 const thanosConstants = {
-  API_GET_CONSTATNTS
+  API_GET_CONTACTS
 }
 
 export default thanosConstants;
