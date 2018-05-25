@@ -37,6 +37,7 @@ const EachField = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  color: #444;
 `
 
 const TableHead = styled.div`
@@ -48,6 +49,7 @@ const TableHead = styled.div`
 
 const EachHead = styled.div`
   width: 30%;
+  font-weight: 900;
 `
 
 const SearchBar = styled.div`
@@ -173,12 +175,11 @@ class Contacts extends Component {
     const filteredContacts = contacts.filter((contact) => {
       const { firstname, lastname, email, agency_name } = contact;
       return (
-        firstname && firstname.toString().toLowerCase().includes(searchField) ||
-        lastname && lastname.toString().toLowerCase().includes(searchField) ||
-        email && email.toString().toLowerCase().includes(searchField) ||
-        agency_name && agency_name.toString().toLowerCase().includes(searchField))
+        firstname && firstname.toString().toLowerCase().includes(searchField.toLowerCase()) ||
+        lastname && lastname.toString().toLowerCase().includes(searchField.toLowerCase()) ||
+        email && email.toString().toLowerCase().includes(searchField.toLowerCase()) ||
+        agency_name && agency_name.toString().toLowerCase().includes(searchField.toLowerCase()))
       })
-    console.log("this.state.limit", this.state.limit);
     let contactsToShow = filteredContacts.slice(0, this.state.limit)
     return(
       <ContactsContainer id="contactsContainer">
