@@ -142,6 +142,7 @@ class Contacts extends Component {
   }
 
   componentWillUnmount () {
+    const { dispatch } = this.props;
     window.removeEventListener('scroll', this.handleScroll);
     /*
       Clear store on unmounting

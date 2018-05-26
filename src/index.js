@@ -6,20 +6,20 @@ import './assets/global-styles'
 import AppRoutes from './routes'
 
 import { Provider } from 'react-redux'
-import { browserHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import configureStore from "./store";
 import { createBrowserHistory } from 'history';
+import createHistory from 'history/createBrowserHistory';
 
 const store = configureStore();
-
+const browserHistory = createHistory();
 
 const containerEl = document.getElementById('thanosApp')
-const history = syncHistoryWithStore(createBrowserHistory(), store)
+
 const render = Component => ReactDOM.render(
   <Provider store={store}>
     <AppContainer>
-      <AppRoutes history={history} />
+      <AppRoutes history={browserHistory} />
     </AppContainer>
   </Provider>,
   containerEl)
