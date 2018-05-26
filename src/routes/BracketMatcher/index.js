@@ -168,8 +168,8 @@ class BracketMatcher extends Component {
    */
   getErrorRowAndColumn = (codeSnippet, position) => {
     const rowColumnArray = JSON.stringify(codeSnippet.slice(0, position)).split(/\\n/) || []
-    const lineNumber = rowColumnArray.length - 1;
-    const columnNumber = rowColumnArray[lineNumber - 1].length
+    const lineNumber = rowColumnArray.length;
+    const columnNumber = rowColumnArray[lineNumber - 1].length - 1
     return {
       lineNumber: lineNumber,
       columnNumber: columnNumber
