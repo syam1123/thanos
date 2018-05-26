@@ -53,12 +53,14 @@ const ResultContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
   }
 `
 
 const ResultHead = styled.h1`
   text-align: center;
   color: red;
+  margin: 0;
   ${props => props.isvalid && css`
     color: green;
   `}
