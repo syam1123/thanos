@@ -32,6 +32,7 @@
     "image-webpack-loader": "^4.1.0",
     "jsdoc": "^3.5.5",
     "json-loader": "^0.5.7",
+    "offline-plugin": "^5.0.3",
     "rimraf": "^2.5.4",
     "standard": "^10.0.3",
     "style-loader": "^0.20.1",

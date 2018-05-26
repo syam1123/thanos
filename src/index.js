@@ -1,6 +1,7 @@
 import { AppContainer } from 'react-hot-loader'
 import ReactDOM from 'react-dom'
 import React from 'react'
+import * as OfflinePluginRuntime from 'offline-plugin/runtime';
 
 import './assets/global-styles'
 import AppRoutes from './routes'
@@ -23,6 +24,8 @@ const render = Component => ReactDOM.render(
     </AppContainer>
   </Provider>,
   containerEl)
+
+OfflinePluginRuntime.install();
 
 render(AppRoutes)
 
