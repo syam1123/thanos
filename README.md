@@ -77,3 +77,11 @@ validateBrackets = () => {
     return {isvalid:(stack.length === 0), position: errorLocation, errortext: bracketErrorMap[2]};
   }
 ```
+
+# Technologies used:
+* ReactJs with es6
+* React-redux (For maintaining the store throughout the project)
+* Styled-components (Make the js file more stable by not keeping an extra css files. Making components more independant)
+* Service worker (Save the heavy js files in the cache storage instead of application storage)
+* Webpack (Bundle JavaScript files for usage in a browser)
+* Firebase (Deployment)
