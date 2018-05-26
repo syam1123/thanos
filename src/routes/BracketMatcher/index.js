@@ -160,6 +160,12 @@ class BracketMatcher extends Component {
     return {isvalid:(stack.length === 0), position: errorLocation, errortext: bracketErrorMap[2]};
   }
 
+  /**
+   * Get the exact location at with the error occured, [lineNumber:columnNumber]
+   * @param  {string} codeSnippet Code snippet
+   * @param  {number} position    Position at which error occured
+   * @return {object}             object of lineNumber and columnNumber
+   */
   getErrorRowAndColumn = (codeSnippet, position) => {
     const rowColumnArray = JSON.stringify(codeSnippet.slice(0, position)).split(/\\n/) || []
     const lineNumber = rowColumnArray.length;
