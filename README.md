@@ -26,6 +26,8 @@ bracket manager is another sub project in Thanos. It will accept all strings/cod
    * If opening bracket is not present
    * If closing bracket is not present
 3. Shows random success message at different times
+4. Showing the exact position at which the error occured
+   * eg: 34:45; i.e., error occured at 34th line and, at 45th character
 
 ### Logic used:
 
