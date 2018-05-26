@@ -58,12 +58,10 @@ validateBrackets = () => {
           return {isvalid: false, position: errorLocation, errortext: bracketErrorMap[0]};
         }
         if(stack.length === 0 || stackPointer !== bracketPosition) {
-          if (bracketPosition % 2 === 1) {
-            /*
-              Opening bracket is not present
-             */
-            errorLocation = i
-          }
+          /*
+            Opening bracket is not present
+           */
+          errorLocation = i
           stack.pop();
           return {isvalid: false, position: errorLocation, errortext: bracketErrorMap[1]};
         }
