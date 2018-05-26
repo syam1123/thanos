@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const OfflinePlugin = require('offline-plugin');
 
 const __DEV__ = process.env.NODE_ENV !== 'production';
 
@@ -92,7 +93,30 @@ module.exports = {
         NODE_ENV: JSON.stringify('production')
       },
     }),
-    new webpack.NamedModulesPlugin()
+    new webpack.NamedModulesPlugin(),
+
+    new OfflinePlugin({
+      publicPath: '/',
+      caches: {
+        main: [
+          'vendor.*.js',
+          '*.js',
+          '**.*.js',
+          '*.png',
+          '*.otf'
+        ]
+      },
+      responseStrategy: 'cache-first',
+      ServiceWorker: {
+        navigateFallbackURL: '/',
+        cacheName: 'thanos-main' // do not change this. It will leave the old cache in browser for ever
+      },
+      AppCache: {
+        FALLBACK: {
+          '/': '/'
+        }
+      }
+    })
 
 
   ],
