@@ -40,11 +40,11 @@ validateBrackets = () => {
     for(i = 0; character = codeSnippet[i]; i++) {
       bracketPosition = parentheses.indexOf(character);
       if(bracketPosition === -1) {
-        // The charectore isn't a bracket
+        // The charactere isn't a bracket
         continue;
       }
       if(bracketPosition % 2 === 0) {
-        // The charector is a bracket
+        // The character is a bracket
         errorLocation = i
         stack.push(bracketPosition + 1); // push next expected brace position
       } else {
