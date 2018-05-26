@@ -79,7 +79,9 @@ class BracketMatcher extends Component {
   	super(props);
   	this.state = {
       codeSnippet: thanosConstants.sampleCode,
-      result: null
+      result: null,
+      columnNumber: '',
+      lineNumber: ''
     };
     /*
       let myString = 'abcd'
@@ -141,12 +143,10 @@ class BracketMatcher extends Component {
           return {isvalid: false, position: errorLocation, errortext: bracketErrorMap[0]};
         }
         if(stack.length === 0 || stackPointer !== bracketPosition) {
-          if (bracketPosition % 2 === 1) {
-            /*
-              Opening bracket is not present
-             */
-            errorLocation = i
-          }
+          /*
+            Opening bracket is not present
+           */
+          errorLocation = i
           stack.pop();
           return {isvalid: false, position: errorLocation, errortext: bracketErrorMap[1]};
         }
@@ -160,16 +160,31 @@ class BracketMatcher extends Component {
     return {isvalid:(stack.length === 0), position: errorLocation, errortext: bracketErrorMap[2]};
   }
 
+  getErrorRowAndColumn = (codeSnippet, position) => {
+    const rowColumnArray = JSON.stringify(codeSnippet.slice(0, position)).split(/\\n/) || []
+    const lineNumber = rowColumnArray.length;
+    const columnNumber = rowColumnArray[lineNumber - 1].length
+    return {
+      lineNumber: lineNumber,
+      columnNumber: columnNumber
+    }
+  }
+
   showResults = () => {
     const resultObject = this.validateBrackets()
     const { isvalid, errortext, position } = resultObject
     let codeSnippet = this.state.codeSnippet;
+    const errorObject = this.getErrorRowAndColumn(codeSnippet, position)
     this.setState({result: resultObject})
     /*
       Append error in the code snippet if the snippet is not valid
      */
     if (!isvalid) {
-      this.setState({codeSnippet: codeSnippet.InsertAt(`\n\n<===== ^${errortext} =====>\n`, position+1)})
+      this.setState({
+        codeSnippet: codeSnippet.InsertAt(`\n\n<===== ^${errortext} =====>\n`, position+1),
+        lineNumber: errorObject.lineNumber,
+        columnNumber: errorObject.columnNumber
+      })
     }
   }
 
@@ -180,11 +195,12 @@ class BracketMatcher extends Component {
      */
     if (!this.state.result)
       return null
+    const { columnNumber, lineNumber } = this.state;
     const { isvalid, errortext, position } = this.state.result
     return (
       <div className="result-container">
         <ResultHead isvalid={isvalid}>{!!isvalid? BRACKET_SUCCESS_MAP.random(): 'Compilation Error'}</ResultHead>
-        {!isvalid && <ErrorDetails>Error at string position: {position}</ErrorDetails>}
+      {!isvalid && <ErrorDetails>Error occured at: {lineNumber}:{columnNumber}</ErrorDetails>}
       </div>
     )
   }
