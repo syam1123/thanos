@@ -12,6 +12,11 @@ import { browserHistory, thanosRoutes } from 'helpers'
 
 import { Loader } from 'components'
 
+const Home = Loadable({
+  loader: () => import('./Home' /* webpackChunkName: 'home' */),
+  loading: Loader
+})
+
 const Contacts = Loadable({
   loader: () => import('./Contacts' /* webpackChunkName: 'contacts' */),
   loading: Loader
@@ -31,6 +36,7 @@ const AppRoutes = (props) => (
   <Router history={props.history}>
     <RouteWrapper>
       <Switch>
+        <Route exact history={props.history} path={thanosRoutes.HOME_ROUTE} component={Home} />
         <Route path={thanosRoutes.CONTACTS_ROUTE} component={Contacts} />
         <Route path={thanosRoutes.BRACKET_MATCHER_ROUTE} component={BracketMatcher} />
         <Route path='/404' component={PageNotAvailable} />

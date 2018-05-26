@@ -8,12 +8,15 @@ const request = (method, url, data) => {
   reqObj.url = url
   if (data) reqObj.data = data
 
-  // FIXME better implementation
   reqObj = appendHeaders(reqObj)
 
   return axios(reqObj)
 }
 
+/*
+  Add headers to the request
+  Future use
+ */
 function appendHeaders (req) {
   return req
 }

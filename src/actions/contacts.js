@@ -1,6 +1,6 @@
 import { thanosRequest, thanosConstants } from 'helpers'
 
-const recieveContacts = (contactsData) => {
+export const recieveContacts = (contactsData) => {
   return {
     type: `RECIEVE_USER_DETAILS`,
     contactsData

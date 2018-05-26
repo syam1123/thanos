@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
-import { getContacts } from 'actions'
-import { EachContactRow } from 'components'
+import { getContacts, recieveContacts } from 'actions'
+import { EachContactRow, Loader } from 'components'
 
 const propTypes = {
   /*
@@ -40,7 +40,7 @@ const EachField = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: #444;
+  color: var(--dark-gray);
 `
 
 const TableHead = styled.div`
@@ -57,7 +57,7 @@ const EachHead = styled.div`
 
 const SearchBar = styled.div`
   background: #4285f4;
-  height: 50px;
+  height: 60px;
   padding: .3em;
   display: flex;
   align-items: center;
@@ -69,7 +69,7 @@ const SearchSection = styled.div`
   max-width: 600px;
   input{
     width: 100%;
-    padding: .5em 2em;
+    padding: .65em 2em;
     border: none;
     background: rgba(255,255,255,.15);
     outline: none;
@@ -82,9 +82,24 @@ const SearchSection = styled.div`
       background: rgba(255,255,255,.75);
       transition: all linear .3s;
       &::placeholder{
-        color: #444;
+        color: var(--dark-gray);
       }
     }
+  }
+`
+
+const TotalLoaded = styled.div`
+  position: fixed;
+  bottom: 1em;
+  right: 1em;
+  background: #fc7712;
+  border-radius: 3px;
+  box-shadow: 0px 0px 4px 1px #f0743052;
+  padding: 1em;
+  color: white;
+  p{
+    text-align: center;
+    margin: 0em;
   }
 `
 
@@ -118,6 +133,10 @@ class Contacts extends Component {
 
   componentWillUnmount () {
     window.removeEventListener('scroll', this.handleScroll);
+    /*
+      Clear store on unmounting
+     */
+    dispatch(recieveContacts([]));
   }
 
   /**
@@ -127,7 +146,7 @@ class Contacts extends Component {
    * @return {string}       Valid string only
    */
   renderValidField = (value) => {
-    if (!value || (!!value && value.toLowerCase() == 'null'))
+    if (!value || (!!value && value.toString().toLowerCase() == 'null'))
       return null;
     return value;
   }
@@ -199,6 +218,16 @@ class Contacts extends Component {
   render = () => {
     const { contacts } = this.props;
     const { searchField } = this.state;
+
+    /*
+      Show loader till initial loading of json is comlete
+     */
+    if (contacts.length == 0) {
+      return (
+        <Loader />
+      )
+    }
+
     /*
       Filter the contacts array with the search input
      */
@@ -212,6 +241,7 @@ class Contacts extends Component {
       Slice the data as to render only limitted number of contacts
      */
     let contactsToShow = filteredContacts.slice(0, this.state.limit)
+
     return(
       <ContactsContainer id="contactsContainer">
         {this.renderSearchBar()}
@@ -222,6 +252,9 @@ class Contacts extends Component {
             return this.renderEachRow(contact, index)
           })}
         </TableContainer>
+        <TotalLoaded>
+          <p>{this.state.limit}</p>
+        </TotalLoaded>
       </ContactsContainer>
     );
   }
