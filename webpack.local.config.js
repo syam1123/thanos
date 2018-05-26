@@ -105,8 +105,6 @@ module.exports = {
         main: [
           'vendor.*.js',
           '*.js',
-          '**.*.js',
-          '*.png',
           '*.otf'
         ]
       },
