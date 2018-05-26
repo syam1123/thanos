@@ -67,9 +67,12 @@ const SearchBar = styled.div`
 const SearchSection = styled.div`
   width: 90%;
   max-width: 600px;
+  display: flex;
+  align-items: center;
+  margin-right: -2.5em;
   input{
     width: 100%;
-    padding: .65em 2em;
+    padding: .75em 2em;
     border: none;
     background: rgba(255,255,255,.15);
     outline: none;
@@ -86,6 +89,13 @@ const SearchSection = styled.div`
       }
     }
   }
+`
+
+const SearchIcon = styled.div`
+  width: 2em;
+  margin-right: -2.5em;
+  display: flex;
+  color: white;
 `
 
 const TotalLoaded = styled.div`
@@ -196,6 +206,9 @@ class Contacts extends Component {
     return (
       <SearchBar>
         <SearchSection>
+          <SearchIcon>
+            <i className="fas fa-search" />
+          </SearchIcon>
           <input type="text" placeholder="Search for a contact" value={this.state.searchField} onChange={this.handleSearchInput} />
         </SearchSection>
       </SearchBar>

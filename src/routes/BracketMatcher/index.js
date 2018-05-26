@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import styled, { css } from 'styled-components'
 
 import { thanosConstants } from 'helpers'
+
 const propTypes = {}
 
 const EditorPage = styled.div`
@@ -19,7 +20,7 @@ const EditorSection = styled.div`
 `
 
 const TextArea = styled.textarea`
-  background: rgb(40, 44, 52);
+  background: rgb(57, 62, 71);
   color: rgb(209, 154, 102);
   height: 70%;
   display: block;
@@ -43,6 +44,7 @@ const Button = styled.button`
   padding: 0.5em 2em;
   font-size: .9em;
   border-radius: 3px;
+  cursor: pointer;
 `
 
 const ResultContainer = styled.div`
@@ -100,28 +102,37 @@ class BracketMatcher extends Component {
     }
   }
 
+  /*
+    Updates the state as the user start typing in the editor
+   */
   handleEditor = (e) => {
     this.setState({codeSnippet: e.target.value, result: null})
   }
 
+  /*
+    Can move this to a utility.js and reuse it across the project
+    Keeping it here for now, Since the function is the main part in this assignment
+   */
   validateBrackets = () => {
     const { codeSnippet } = this.state
     const { bracketErrorMap } = thanosConstants
     let parentheses = "[]{}()",
       stack = [],
-      i, character, bracePosition, errorLocation;
+      i, character, bracketPosition, errorLocation;
 
     for(i = 0; character = codeSnippet[i]; i++) {
-      bracePosition = parentheses.indexOf(character);
-      if(bracePosition === -1) {
+      bracketPosition = parentheses.indexOf(character);
+      if(bracketPosition === -1) {
+        // The charectore isn't a bracket
         continue;
       }
-      if(bracePosition % 2 === 0) {
+      if(bracketPosition % 2 === 0) {
+        // The charector is a bracket
         errorLocation = i
-        stack.push(bracePosition + 1); // push next expected brace position
+        stack.push(bracketPosition + 1); // push next expected brace position
       } else {
         let stackPointer = stack[stack.length -1 ]
-        if (stack.length > 0 && stackPointer !== bracePosition) {
+        if (stack.length > 0 && stackPointer !== bracketPosition) {
           /*
             Opening bracket and closing brackets are different
             Show error at opening bracket position
@@ -129,8 +140,8 @@ class BracketMatcher extends Component {
           stack.pop();
           return {isvalid: false, position: errorLocation, errortext: bracketErrorMap[0]};
         }
-        if(stack.length === 0 || stackPointer !== bracePosition) {
-          if (bracePosition % 2 === 1) {
+        if(stack.length === 0 || stackPointer !== bracketPosition) {
+          if (bracketPosition % 2 === 1) {
             /*
               Opening bracket is not present
              */
@@ -154,6 +165,9 @@ class BracketMatcher extends Component {
     const { isvalid, errortext, position } = resultObject
     let codeSnippet = this.state.codeSnippet;
     this.setState({result: resultObject})
+    /*
+      Append error in the code snippet if the snippet is not valid
+     */
     if (!isvalid) {
       this.setState({codeSnippet: codeSnippet.InsertAt(`\n\n<===== ^${errortext} =====>\n`, position+1)})
     }
@@ -161,6 +175,9 @@ class BracketMatcher extends Component {
 
   renderResult = () => {
     const { BRACKET_SUCCESS_MAP } = thanosConstants
+    /*
+      Don't show result container if the result object is null/empty
+     */
     if (!this.state.result)
       return null
     const { isvalid, errortext, position } = this.state.result

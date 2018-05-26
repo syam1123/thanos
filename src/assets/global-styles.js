@@ -5,6 +5,7 @@ import AvenirLight from './fonts/AvenirLTStd-Light.otf'
 import 'sanitize.css'
 
 injectGlobal`
+  @import url(https://use.fontawesome.com/releases/v5.0.13/css/all.css);
 
   @font-face {
     font-family: 'Avenir';
