@@ -8,7 +8,7 @@ import React from 'react'
 import Loadable from 'react-loadable'
 import styled from 'styled-components'
 
-import { browserHistory, thanosRoutes } from 'helpers'
+import { thanosRoutes } from 'helpers'
 
 import { Loader } from 'components'
 
@@ -32,6 +32,11 @@ const PageNotAvailable = Loadable({
   loading: Loader
 })
 
+const ImageGallery = Loadable({
+  loader: () => import('./ImageGallery' /* webpackChunkName: 'imageGallery' */),
+  loading: Loader
+})
+console.log("thanosRoutes.IMAGE_GALLERY_URL", thanosRoutes.IMAGE_GALLERY_URL);
 const AppRoutes = (props) => (
   <Router history={props.history}>
     <RouteWrapper>
@@ -39,8 +44,9 @@ const AppRoutes = (props) => (
         <Route exact history={props.history} path={thanosRoutes.HOME_ROUTE} component={Home} />
         <Route path={thanosRoutes.CONTACTS_ROUTE} component={Contacts} />
         <Route path={thanosRoutes.BRACKET_MATCHER_ROUTE} component={BracketMatcher} />
-        <Route path='/404' component={PageNotAvailable} />
-        <Redirect to='/404' />
+        <Route path={thanosRoutes.IMAGE_GALLERY_URL} component={ImageGallery} />
+        {/* <Route path='/404' component={PageNotAvailable} />
+        <Redirect to='/404' /> */}
       </Switch>
     </RouteWrapper>
   </Router>

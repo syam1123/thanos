@@ -1,8 +1,8 @@
 import {combineReducers} from "redux";
-import contacts from './contacts'
+import images from './contacts'
 
 const appReducer = combineReducers({
-  contacts
+  images
 });
 
 export default appReducer;

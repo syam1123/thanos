@@ -45,17 +45,34 @@ const CardsContainer = styled.div`
     border-radius: 3px;
     color: #4d8ffb;
   }
+  @media screen and (max-width: 600px) {
+    flex-direction: column;
+    a{
+      width: 100%;
+      margin: 1em 0em;
+    }
+  }
 `
 
 const NavigationCard = styled.div`
   font-size: 2em;
   font-weight: 300;
+  @media screen and (max-width: 600px) {
+    display: flex;
+    align-items: center;
+    text-align: left;
+  }
 `
 
 const IconSection = styled.div`
   i{
     font-size: 5em;
     margin-bottom: 2rem;
+    @media screen and (max-width: 600px) {
+      margin: 0;
+      font-size: 3em;
+      margin-right: 2rem;
+    }
   }
 `
 
