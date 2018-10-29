@@ -26,6 +26,8 @@ bracket manager is another sub project in Thanos. It will accept all strings/cod
    * If opening bracket is not present
    * If closing bracket is not present
 3. Shows random success message at different times
+4. Showing the exact position at which the error occured
+   * eg: 34:45; i.e., error occured at 34th line and, at 45th character
 
 ### Logic used:
 
@@ -58,12 +60,10 @@ validateBrackets = () => {
           return {isvalid: false, position: errorLocation, errortext: bracketErrorMap[0]};
         }
         if(stack.length === 0 || stackPointer !== bracketPosition) {
-          if (bracketPosition % 2 === 1) {
-            /*
-              Opening bracket is not present
-             */
-            errorLocation = i
-          }
+          /*
+            Opening bracket is not present
+           */
+          errorLocation = i
           stack.pop();
           return {isvalid: false, position: errorLocation, errortext: bracketErrorMap[1]};
         }
@@ -77,3 +77,11 @@ validateBrackets = () => {
     return {isvalid:(stack.length === 0), position: errorLocation, errortext: bracketErrorMap[2]};
   }
 ```
+
+# Technologies used:
+* ReactJs with es6
+* React-redux (For maintaining the store throughout the project)
+* Styled-components (Make the js file more stable by not keeping an extra css files. Making components more independant)
+* Service worker (Save the heavy js files in the cache storage instead of application storage)
+* Webpack (Bundle JavaScript files for usage in a browser)
+* Firebase (Deployment)
